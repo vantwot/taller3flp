@@ -13,6 +13,31 @@
 ;                                SOLUCIÓN
 ;******************************************************************************************
 
+;******************************************************************************************
+;; La definición BNF para las expresiones del lenguaje:
+;;
+;;  <program>       ::= <expresion>
+;;                      <un-programa (exp)>
+;;  <expresion>     ::= <numero>
+;;                      <numero-lit (num)>
+;;                  ::= <"\" <texto> "\">
+;;                      <texto-lit (txt)>
+;;                  ::= <identificador>
+;;                      <var-exp (id)>
+;;                  ::= <(<expresion> <primitiva-binaria> <expresion>)>
+;;                      <primapp-bin-exp (exp1 prim-binaria exp2)>
+;;                  ::= <primitiva-unaria> (<expresion>)>
+;;                      <primapp-un-exp (prim-unaria exp)>
+;; <primitiva-binaria> :=  + (primitiva-suma)
+;;                     :=  ~ (primitiva-resta)
+;;                     :=  / (primitiva-div)
+;;                     :=  * (primitiva-multi)
+;;                     :=  concat (primitiva-concat)
+;;<primitiva-unaria>   :=  longitud (primitiva-longitud)
+;;                     :=  add1 (primitiva-add1)
+;;                     :=  sub1 (primitiva-sub1)
+;******************************************************************************************
+
 ;Especificación Léxica
 
 (define scanner-spec-simple-interpreter
