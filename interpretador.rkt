@@ -335,6 +335,9 @@
                 (+ list-index-r 1)
                 #f))))))
 
+; *****************************************************************************************************************
+;                                          PUNTOS CALIFICABLES
+; *****************************************************************************************************************
 
 ;; a) Escriba un programa en su lenguaje de programación que contenga un procedimiento areaCirculo que
 ;; permita calcular el area de un circulo dado un radio (A=PI*r*r). Debe incluir valores flotantes en
@@ -349,7 +352,9 @@
 ; procedimiento que permita calcular el factorial de un número n.
 ; Como la gramática para funciones recursivas debe ser propuesta por el grupo,
 ; incluya dos ejemplos de uso para el factorial de 5 y el factorial de 10.
-; 
+
+; ***********************************************************************************************
+
 ; c) 10pts. Escriba un programa en su lenguaje de programación que contenga un
 ; procedimiento que permita calcular una suma de forma recursiva.
 ; Debe hacer uso de las funciones add1 y sub1 (remitase a la clase
@@ -362,7 +367,25 @@
 ;    haga
 ;    evaluar @sumar (4,5) finEval
 ;  finRec
-; 
+
+; ***********************************************************************************************
+
 ; d) 15pts. Escriba un programa en su lenguaje de programación que permita restar y
 ; multiplicar dos números haciendo uso solamente de las primitivas add1 y sub1.
 ; Incluya llamados:  "evaluar @restar (10, 3) finEval  ",  "evaluar @multiplicar (10, 3) finEval" 
+
+;  funcionRec
+;    @restar(@x;@y) = Si @y entonces evaluar @restar (sub1(@x),sub1(@y)) finEval sino @x finSI
+;    @sumar(@a;@b) = Si @a entonces evaluar @sumar (sub1(@a),add1(@b)) finEval sino @b finSI
+;    @multiplicar(@c;@d) = Si @d entonces evaluar @sumar (@c, evaluar @multiplicar (@c,sub1(@d)) finEval) finEval sino 0 finSI
+;    haga
+;    evaluar @restar (10,3) finEval
+;  finRec
+
+; funcionRec
+;   @restar(@x;@y) = Si @y entonces evaluar @restar (sub1(@x),sub1(@y)) finEval sino @x finSI
+;   @sumar(@a;@b) = Si @a entonces evaluar @sumar (sub1(@a),add1(@b)) finEval sino @b finSI
+;   @multiplicar(@c;@d) = Si @d entonces evaluar @sumar (@c, evaluar @multiplicar (@c,sub1(@d)) finEval) finEval sino 0 finSI
+;   haga
+;   evaluar @multiplicar (10,3) finEval
+; finRec
