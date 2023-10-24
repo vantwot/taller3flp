@@ -20,7 +20,7 @@
 ;;                      <un-programa (exp)>
 ;;  <expresion>     ::= <numero>
 ;;                      <numero-lit (num)>
-;;                  ::= <"\" <texto> "\">
+;;                  ::= <"\"" <texto> "\"">
 ;;                      <texto-lit (txt)>
 ;;                  ::= <identificador>
 ;;                      <var-exp (id)>
@@ -46,7 +46,7 @@
   (comment
    ("#" (arbno (not #\newline))) skip)
   (texto
-   ("\"" (arbno (not #\newline)) "\"") string)
+   ((arbno (or letter digit))) string)
   (identificador
    ("@" letter (arbno (or letter digit))) symbol)
   (number
@@ -65,7 +65,7 @@
 
 (define grammar-simple-interpreter
   '((programa (expresion) un-programa)
-    (expresion (texto) texto-lit)
+    (expresion ("\"" texto "\"") texto-lit)
     (expresion (number) numero-lit)
     (expresion (identificador) var-exp)    
     (expresion
