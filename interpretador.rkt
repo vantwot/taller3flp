@@ -365,9 +365,27 @@
 ; procedimiento que permita calcular el factorial de un número n.
 ; Como la gramática para funciones recursivas debe ser propuesta por el grupo,
 ; incluya dos ejemplos de uso para el factorial de 5 y el factorial de 10.
-
-; ***********************************************************************************************
-
+;
+;# ejemplo con 5
+;
+;   funcionRec
+;          @factorial(@n) = 
+;             Si @n 
+;                entonces (@n * evaluar @factorial (sub1(@n)) finEval)
+;                sino 1 finSI
+;          haga
+;             evaluar @factorial (5) finEval finRec
+;
+;# ejemplo con 10
+;
+;   funcionRec
+;          @factorial(@n) = 
+;             Si @n 
+;                entonces (@n * evaluar @factorial (sub1(@n)) finEval)
+;                sino 1 finSI
+;          haga
+;             evaluar @factorial (10) finEval finRec
+; 
 ; c) 10pts. Escriba un programa en su lenguaje de programación que contenga un
 ; procedimiento que permita calcular una suma de forma recursiva.
 ; Debe hacer uso de las funciones add1 y sub1 (remitase a la clase
