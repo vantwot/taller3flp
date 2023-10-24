@@ -43,6 +43,8 @@
 (define scanner-spec-simple-interpreter
 '((white-sp
    (whitespace) skip)
+  (comment
+   ("#" (arbno (not #\newline))) skip)
   (texto
    ("\"" (arbno (not #\newline)) "\"") string)
   (identificador
@@ -63,7 +65,7 @@
 
 (define grammar-simple-interpreter
   '((programa (expresion) un-programa)
-    (expresion ("\"" texto "\"") texto-lit)
+    (expresion (texto) texto-lit)
     (expresion (number) numero-lit)
     (expresion (identificador) var-exp)    
     (expresion
@@ -171,7 +173,7 @@
   (lambda (exp env)
     (cases expresion exp
 
-      (texto-lit (txt) txt)
+      (texto-lit (datum) datum)
       
       (numero-lit (datum) datum)
       
@@ -336,6 +338,12 @@
               (if (number? list-index-r)
                 (+ list-index-r 1)
                 #f))))))
+
+;****************************************************************************************
+;Ejecutamos el interpretador
+
+(interpretador)
+;****************************************************************************************
 
 ; *****************************************************************************************************************
 ;                                          PUNTOS CALIFICABLES
