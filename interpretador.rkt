@@ -46,7 +46,7 @@
   (comment
    ("#" (arbno (not #\newline))) skip)
   (texto
-   ((arbno (or letter digit))) string)
+   (letter (arbno (or letter digit))) string)
   (identificador
    ("@" letter (arbno (or letter digit))) symbol)
   (number
