@@ -102,8 +102,9 @@
                 app-exp)
     
     ;;;;;;;;;; RECURSIVOS ;;;;;;;;;;
-    (expresion ("funcionRec" (arbno identificador "(" (separated-list identificador ";") ")" "=" expresion) "haga" expresion "finRec") 
-                recursivo-exp)))
+    (expresion ("funcionRec" (arbno identificador "(" (separated-list identificador ";") ")" "=" expresion)
+                             "haga" expresion "finRec")
+               recursivo-exp)))
     ;;;;;;    
 
 
@@ -180,8 +181,7 @@
                      (apply-primitiva-binaria prim-binaria args)))
       
       (primapp-un-exp (prim-unaria exp)
-                   (let ((args (eval-rand exp env)))
-                     (apply-primitiva-unaria prim-unaria args)))
+                     (apply-primitiva-unaria prim-unaria (eval-expression exp env)))
       
       (condicional-exp (test-exp true-exp false-exp)
               (if (true-value? (eval-expression test-exp env))
@@ -233,8 +233,8 @@
 (define apply-primitiva-unaria
   (lambda (prim args)
     (cases primitiva-unaria prim
-      (primitiva-add1 () (+ (car args) 1))
-      (primitiva-sub1 () (- (car args) 1)))))
+      (primitiva-add1 () (+ args 1))
+      (primitiva-sub1 () (- args 1)))))
 
 ;true-value?: determina si un valor dado corresponde a un valor booleano falso o verdadero
 (define true-value?
@@ -357,18 +357,11 @@
 ; Si no se evidencia el uso de add1 y sub1, el ejercicio no será valido.
 ; Incluya un llamado a la función recursiva: "evaluar @sumar (4, 5) finEval "
 ; 
-; declarar (
-;           @add1 = procedimiento(@n) haga (@n + 1) finProc;
-;           @sub1 = procedimiento(@n) haga (@n - 1) finProc;
-; 
-;           @sumar = funcionRec(@x;@y) haga
-;           Si (zero? @x) entonces
-;               @y
-;            sino
-;               evaluar sumar (sub1(@x), add1(@y)) finEval
-;               finSI
-;           finRec)
-; {evaluar @sumar (4,5) finEval}
+;  funcionRec
+;    @sumar(@x;@y) = Si @x entonces evaluar @sumar (sub1(@x),add1(@y)) finEval sino @y finSI
+;    haga
+;    evaluar @sumar (4,5) finEval
+;  finRec
 ; 
 ; d) 15pts. Escriba un programa en su lenguaje de programación que permita restar y
 ; multiplicar dos números haciendo uso solamente de las primitivas add1 y sub1.
