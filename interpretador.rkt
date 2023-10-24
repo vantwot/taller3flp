@@ -1,5 +1,4 @@
 #lang eopl
-#lang eopl
 ;******************************************************************************************
 ;;;;; Integrantes:
 ;;;;; SANTIAGO DUQUE CHACÓN-2180099
@@ -47,7 +46,7 @@
   (comment
    ("#" (arbno (not #\newline))) skip)
   (texto
-   ((or letter digit ":" "!" "$" "_" "-" "|" "%" "&" "°" "<" ">" "^" "[" "]")
+   ((or letter  ":" "!" "$" "_" "-" "|" "%" "&" "°" "<" ">" "^" "[" "]")
     (arbno (or letter digit ":" "!" "$" "_" "-" "|" "%" "&" "°" "<" ">" "^" "[" "]"))) string)
   (identificador
    ("@" letter (arbno (or letter digit))) symbol)
@@ -346,7 +345,7 @@
 ;****************************************************************************************
 ;Ejecutamos el interpretador
 
-(interpretador)
+;(interpretador)
 ;****************************************************************************************
 
 ; *****************************************************************************************************************
@@ -404,9 +403,22 @@
 ;   evaluar @multiplicar (10,3) finEval
 ; finRec
 
+; e) 25pts. Crea una función @integrantes que muestre los nombres de los integrantes del grupo y adicionalmente crea un decorador
+; que al invocarlo salude a los integrantes
 
+; declarar (
+;     @integrantes = procedimiento () haga "Santiago-Deiby-Valentina" finProc;
+;    @saludar = procedimiento (@var) haga ("Hola:" concat evaluar @var () finEval) finProc
+;  ) {
+;      declarar (@decorate = procedimiento () haga evaluar @saludar (@integrantes) finEval finProc){
+;evaluar @decorate () finEval }}
 
+;f) 35pts. Modifique el ejercicio anterior para que el decorador reciba como parámetro otro mensaje que debe ponerse al final de todo
+; el string (cualquier implementación sin el concepto de decorador no será evaluada).
 
-
-
-
+;declarar (
+;    @integrantes = procedimiento () haga "S-D-V" finProc;
+;    @saludar = procedimiento (@var) haga ("Hola:" concat evaluar @var () finEval) finProc
+;  ) {
+;      declarar (@decorate = procedimiento (@vars) haga (evaluar @saludar (@integrantes) finEval concat @vars) finProc){
+;evaluar @decorate ("-ProfesoresFLP") finEval }}
