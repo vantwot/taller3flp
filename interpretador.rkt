@@ -1,4 +1,5 @@
 #lang eopl
+#lang eopl
 ;******************************************************************************************
 ;;;;; Integrantes:
 ;;;;; SANTIAGO DUQUE CHACÓN-2180099
@@ -46,7 +47,8 @@
   (comment
    ("#" (arbno (not #\newline))) skip)
   (texto
-   (letter (arbno (or letter digit))) string)
+   ((or letter digit ":" "!" "$" "_" "-" "|" "%" "&" "°" "<" ">" "^" "[" "]")
+    (arbno (or letter digit ":" "!" "$" "_" "-" "|" "%" "&" "°" "<" ">" "^" "[" "]"))) string)
   (identificador
    ("@" letter (arbno (or letter digit))) symbol)
   (number
@@ -65,7 +67,7 @@
 
 (define grammar-simple-interpreter
   '((programa (expresion) un-programa)
-    (expresion ("\"" texto "\"") texto-lit)
+    ;(expresion ("\"" texto "\"") texto-lit)
     (expresion (number) numero-lit)
     (expresion (identificador) var-exp)    
     (expresion
@@ -105,7 +107,9 @@
     ;;;;;;;;;; RECURSIVOS ;;;;;;;;;;
     (expresion ("funcionRec" (arbno identificador "(" (separated-list identificador ";") ")" "=" expresion)
                              "haga" expresion "finRec")
-               recursivo-exp)))
+               recursivo-exp)
+
+    (expresion ("\"" texto "\"") texto-lit)))
     ;;;;;;    
 
 
@@ -173,7 +177,7 @@
   (lambda (exp env)
     (cases expresion exp
 
-      (texto-lit (datum) datum)
+      (texto-lit (txt) txt)
       
       (numero-lit (datum) datum)
       
@@ -231,7 +235,7 @@
       (primitiva-resta () (- (car args) (cadr args)))
       (primitiva-multi () (* (car args) (cadr args)))
       (primitiva-div () (/ (car args) (cadr args)))
-      (primitiva-concat () (list (car args) (cadr args))))))
+      (primitiva-concat () (string-append (car args) (cadr args))))))
 
 (define apply-primitiva-unaria
   (lambda (prim args)
@@ -399,3 +403,10 @@
 ;   haga
 ;   evaluar @multiplicar (10,3) finEval
 ; finRec
+
+
+
+
+
+
+
