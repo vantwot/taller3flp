@@ -55,6 +55,8 @@
    (digit (arbno digit) "." digit (arbno digit)) number)
   (number
    ("-" digit (arbno digit) "." digit (arbno digit)) number)
+;;  (texto
+;;   ("" (arbno (or "-" letter digit ":"))"" ) string)
   )
   )
 
@@ -157,8 +159,8 @@
 (define init-env
   (lambda ()
     (extend-env
-     '(@a @b @c @d @e @PI)
-     '(1 2 3 "hola" "FLP" 3.14)
+     '(@a @b @c @d @e @pi)
+     '(1 2 3 "hola" "FLP" 3.14159265)
      (empty-env))))
 
 ;*******************************************************************************************
@@ -189,7 +191,7 @@
       (variableLocal-exp (ids rands cuerpo)
                (let ((args (eval-rands rands env)))
                  (eval-expression cuerpo
-                                  (extend-env ids rands env))))
+                                  (extend-env ids args env))))
       
       (procedimiento-exp (ids cuerpo)
                 (cerradura ids cuerpo env))
@@ -251,10 +253,10 @@
 
 ;apply-procedure: evalua el cuerpo de un procedimientos en el ambiente extendido correspondiente
 (define apply-procedure
-  (lambda (proc exps)
+  (lambda (proc args)
     (cases procval proc
-      (cerradura (lista-ID exp env)
-               (eval-expression exp (extend-env lista-ID exps env))))))
+      (cerradura (lista-ID cuerpo env)
+               (eval-expression cuerpo (extend-env lista-ID args env))))))
 
 ;*******************************************************************************************
 ;Ambientes
@@ -332,3 +334,14 @@
               (if (number? list-index-r)
                 (+ list-index-r 1)
                 #f))))))
+
+
+;; a) Escriba un programa en su lenguaje de programación que contenga un procedimiento areaCirculo que
+;; permita calcular el area de un circulo dado un radio (A=PI*r*r). Debe incluir valores flotantes en
+;; su lenguaje de programación. Deberá invocarlo utilizando una variable @radio como parámetro:
+;  declarar (
+;          @radio=2.5;
+;          @areaCirculo = procedimiento(@r) haga ((@pi * @r) * @r) finProc
+;          ) {
+;             evaluar @areaCirculo (@radio) finEval
+;                     }
