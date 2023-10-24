@@ -44,7 +44,7 @@
 '((white-sp
    (whitespace) skip)
   (texto
-   ("\"" (arbno (not #\newline)) "\"") skip)
+   ("\"" (arbno (not #\newline)) "\"") string)
   (identificador
    ("@" letter (arbno (or letter digit))) symbol)
   (number
@@ -55,8 +55,6 @@
    (digit (arbno digit) "." digit (arbno digit)) number)
   (number
    ("-" digit (arbno digit) "." digit (arbno digit)) number)
-;;  (texto
-;;   ("" (arbno (or "-" letter digit ":"))"" ) string)
   )
   )
 
@@ -65,6 +63,7 @@
 
 (define grammar-simple-interpreter
   '((programa (expresion) un-programa)
+    (expresion ("\"" texto "\"") texto-lit)
     (expresion (number) numero-lit)
     (expresion (identificador) var-exp)    
     (expresion
@@ -81,7 +80,7 @@
     (primitiva-binaria ("*") primitiva-multi)
     (primitiva-binaria ("concat") primitiva-concat)
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-    ;(primitiva-unaria ("longitud") primitiva-longitud)
+    (primitiva-unaria ("longitud") primitiva-longitud)
     (primitiva-unaria ("add1") primitiva-add1)
     (primitiva-unaria ("sub1") primitiva-sub1)
 
@@ -171,6 +170,8 @@
 (define eval-expression
   (lambda (exp env)
     (cases expresion exp
+
+      (texto-lit (txt) txt)
       
       (numero-lit (datum) datum)
       
@@ -233,6 +234,7 @@
 (define apply-primitiva-unaria
   (lambda (prim args)
     (cases primitiva-unaria prim
+      (primitiva-longitud () (string-length args))
       (primitiva-add1 () (+ args 1))
       (primitiva-sub1 () (- args 1)))))
 
