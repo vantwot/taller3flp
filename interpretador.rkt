@@ -44,9 +44,9 @@
 '((white-sp
    (whitespace) skip)
   (texto
-   ( "\"" (arbno (not #\newline)) "\"") skip)
+   ("\"" (arbno (not #\newline)) "\"") skip)
   (identificador
-   ("@" letter (arbno (or letter digit "?"))) symbol)
+   ("@" letter (arbno (or letter digit))) symbol)
   (number
    (digit (arbno digit)) number)
   (number
@@ -54,22 +54,24 @@
   (number
    (digit (arbno digit) "." digit (arbno digit)) number)
   (number
-   ("-" digit (arbno digit) "." digit (arbno digit)) number)))
+   ("-" digit (arbno digit) "." digit (arbno digit)) number)
+  )
+  )
 
-;******************************************************************************************
 
 ;Especificación Sintáctica (gramática)
 
 (define grammar-simple-interpreter
   '((programa (expresion) un-programa)
     (expresion (number) numero-lit)
-    (expresion (identificador) var-exp)
+    (expresion (identificador) var-exp)    
     (expresion
-     ("(" expresion primitiva-binaria expresion ")")
+     ("("  expresion primitiva-binaria expresion ")")
      primapp-bin-exp)
     (expresion
-     (primitiva-unaria "(" expresion ")")
+     (primitiva-unaria "("expresion ")")
      primapp-un-exp)
+    
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     (primitiva-binaria ("+") primitiva-suma)
     (primitiva-binaria ("~") primitiva-resta)
@@ -77,11 +79,32 @@
     (primitiva-binaria ("*") primitiva-multi)
     (primitiva-binaria ("concat") primitiva-concat)
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-    (primitiva-unaria ("longitud") primitiva-longitud)
+    ;(primitiva-unaria ("longitud") primitiva-longitud)
     (primitiva-unaria ("add1") primitiva-add1)
-    (primitiva-unaria ("sub1") primitiva-sub1)))
+    (primitiva-unaria ("sub1") primitiva-sub1)
 
-;*******************************************************************************************
+
+    ;;;;;;;;;; CONDICIONALES ;;;;;;;;;;
+    (expresion ("Si" expresion "entonces" expresion "sino" expresion "finSI")
+                condicional-exp)
+
+    ;;;;;;;;;; DECLARAR VARIABLES ;;;;;;;;;;
+    (expresion ("declarar" "("(separated-list identificador "=" expresion ";" ) ")" "{" expresion "}")
+                variableLocal-exp)
+
+    ;;;;;;;;;; CREAR PROCEDIMIENTOS ;;;;;;;;;;
+    (expresion ("procedimiento" "(" (separated-list identificador ",") ")" "haga" expresion "finProc")
+                procedimiento-exp)
+    ;;;;;;;;;; EVALUAR PROCEDIMIENTOS ;;;;;;;;;;
+    (expresion ("evaluar" expresion "(" (separated-list expresion ",") ")" "finEval")
+                app-exp)
+    
+    ;;;;;;;;;; RECURSIVOS ;;;;;;;;;;
+    (expresion ("funcionRec" (arbno identificador "(" (separated-list identificador ";") ")" "=" expresion) "haga" expresion "finRec") 
+                recursivo-exp)))
+    ;;;;;;    
+
+
 
 ;Tipos de datos para la sintaxis abstracta de la gramática construidos automáticamente:
 
@@ -91,7 +114,6 @@
   (lambda () (sllgen:list-define-datatypes scanner-spec-simple-interpreter grammar-simple-interpreter)))
 
 ;*******************************************************************************************
-
 ;Parser, Scanner, Interfaz
 
 ;El FrontEnd (Análisis léxico (scanner) y sintáctico (parser) integrados)
@@ -104,7 +126,9 @@
 (define just-scan
   (sllgen:make-string-scanner scanner-spec-simple-interpreter grammar-simple-interpreter))
 
+
 ;El Interpretador (FrontEnd + Evaluación + señal para lectura )
+
 
 (define interpretador
   (sllgen:make-rep-loop  "--> "
@@ -113,8 +137,8 @@
       scanner-spec-simple-interpreter
       grammar-simple-interpreter)))
 
-;*******************************************************************************************
 
+;*******************************************************************************************
 ;El Interprete
 
 ;eval-program: <programa> -> numero
@@ -133,8 +157,8 @@
 (define init-env
   (lambda ()
     (extend-env
-     '(@a @b @c @d @e)
-     '(1 2 3 "hola" "FLP")
+     '(@a @b @c @d @e @PI)
+     '(1 2 3 "hola" "FLP" 3.14)
      (empty-env))))
 
 ;*******************************************************************************************
@@ -144,14 +168,43 @@
 (define eval-expression
   (lambda (exp env)
     (cases expresion exp
+      
       (numero-lit (datum) datum)
+      
       (var-exp (id) (apply-env env id))
-      (primapp-bin-exp (rand1 prim rand2)
-                   (let ((args (eval-rands (list rand1 rand2) env)))
-                     (apply-primitive prim args)))
-      (primapp-un-exp (prim rand1)
-                   (let ((args (eval-rand rand1 env)))
-                     (apply-primitive prim args))))))
+      
+      (primapp-bin-exp (exp1 prim-binaria exp2)
+                   (let ((args (eval-rands (list exp1 exp2) env)))
+                     (apply-primitiva-binaria prim-binaria args)))
+      
+      (primapp-un-exp (prim-unaria exp)
+                   (let ((args (eval-rand exp env)))
+                     (apply-primitiva-unaria prim-unaria args)))
+      
+      (condicional-exp (test-exp true-exp false-exp)
+              (if (true-value? (eval-expression test-exp env))
+                  (eval-expression true-exp env)
+                  (eval-expression false-exp env)))
+      
+      (variableLocal-exp (ids rands cuerpo)
+               (let ((args (eval-rands rands env)))
+                 (eval-expression cuerpo
+                                  (extend-env ids rands env))))
+      
+      (procedimiento-exp (ids cuerpo)
+                (cerradura ids cuerpo env))
+      
+      (app-exp (rator rands)
+               (let ((proc (eval-expression rator env))
+                     (args (eval-rands rands env)))
+                 (if (procval? proc)
+                     (apply-procedure proc args)
+                     (eopl:error 'eval-expression
+                                 "Attempt to apply non-procedure ~s" proc))))
+      
+      (recursivo-exp (proc-names idss cuerpos letrec-body)
+                  (eval-expression letrec-body
+                                   (extend-env-recursively proc-names idss cuerpos env))))))
 
 
 
@@ -165,15 +218,21 @@
   (lambda (rand env)
     (eval-expression rand env)))
 
-;apply-primitive: <primitiva> <list-of-expression> -> numero
-(define apply-primitive
+;apply-primitiva: <primitiva> <list-of-expression> -> numero
+(define apply-primitiva-binaria
   (lambda (prim args)
     (cases primitiva-binaria prim
       (primitiva-suma () (+ (car args) (cadr args)))
       (primitiva-resta () (- (car args) (cadr args)))
-      (primitiva-div () (- (car args) (cadr args)))
       (primitiva-multi () (* (car args) (cadr args)))
+      (primitiva-div () (/ (car args) (cadr args)))
       (primitiva-concat () (list (car args) (cadr args))))))
+
+(define apply-primitiva-unaria
+  (lambda (prim args)
+    (cases primitiva-unaria prim
+      (primitiva-add1 () (+ (car args) 1))
+      (primitiva-sub1 () (- (car args) 1)))))
 
 ;true-value?: determina si un valor dado corresponde a un valor booleano falso o verdadero
 (define true-value?
@@ -183,17 +242,19 @@
 ;*******************************************************************************************
 ;Procedimientos
 (define-datatype procval procval?
-  (closure
-   (ids (list-of symbol?))
-   (body expresion?)
-   (env environment?)))
+  (cerradura
+   (lista-ID (list-of symbol?))
+   (cuerpo expresion?)
+   (env environment?)
+   )
+  )
 
 ;apply-procedure: evalua el cuerpo de un procedimientos en el ambiente extendido correspondiente
 (define apply-procedure
-  (lambda (proc args)
+  (lambda (proc exps)
     (cases procval proc
-      (closure (ids body env)
-               (eval-expression body (extend-env ids args env))))))
+      (cerradura (lista-ID exp env)
+               (eval-expression exp (extend-env lista-ID exps env))))))
 
 ;*******************************************************************************************
 ;Ambientes
@@ -246,7 +307,7 @@
       (recursively-extended-env-record (proc-names idss bodies old-env)
                                        (let ((pos (list-find-position sym proc-names)))
                                          (if (number? pos)
-                                             (closure (list-ref idss pos)
+                                             (cerradura (list-ref idss pos)
                                                       (list-ref bodies pos)
                                                       env)
                                              (apply-env old-env sym)))))))
@@ -271,4 +332,3 @@
               (if (number? list-index-r)
                 (+ list-index-r 1)
                 #f))))))
-
