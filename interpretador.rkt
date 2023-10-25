@@ -8,7 +8,6 @@
 ;;;;; URL del repositorio en github: https://github.com/vantwot/taller3flp.git
 ;******************************************************************************************
 
-
 ;******************************************************************************************
 ;                                SOLUCIÓN
 ;******************************************************************************************
@@ -66,7 +65,6 @@
 
 (define grammar-simple-interpreter
   '((programa (expresion) un-programa)
-    ;(expresion ("\"" texto "\"") texto-lit)
     (expresion (number) numero-lit)
     (expresion (identificador) var-exp)    
     (expresion
@@ -111,8 +109,6 @@
     (expresion ("\"" texto "\"") texto-lit)))
     ;;;;;;    
 
-
-
 ;Tipos de datos para la sintaxis abstracta de la gramática construidos automáticamente:
 
 (sllgen:make-define-datatypes scanner-spec-simple-interpreter grammar-simple-interpreter)
@@ -136,14 +132,12 @@
 
 ;El Interpretador (FrontEnd + Evaluación + señal para lectura )
 
-
 (define interpretador
   (sllgen:make-rep-loop  "--> "
     (lambda (pgm) (eval-program  pgm)) 
     (sllgen:make-stream-parser 
       scanner-spec-simple-interpreter
       grammar-simple-interpreter)))
-
 
 ;*******************************************************************************************
 ;El Interprete
@@ -342,12 +336,6 @@
                 (+ list-index-r 1)
                 #f))))))
 
-;****************************************************************************************
-;Ejecutamos el interpretador
-
-;(interpretador)
-;****************************************************************************************
-
 ; *****************************************************************************************************************
 ;                                          PUNTOS CALIFICABLES
 ; *****************************************************************************************************************
@@ -355,18 +343,30 @@
 ;; a) Escriba un programa en su lenguaje de programación que contenga un procedimiento areaCirculo que
 ;; permita calcular el area de un circulo dado un radio (A=PI*r*r). Debe incluir valores flotantes en
 ;; su lenguaje de programación. Deberá invocarlo utilizando una variable @radio como parámetro:
+
+; Ejemplo con radio = 2.5
 ;  declarar (
 ;          @radio=2.5;
 ;          @areaCirculo = procedimiento(@r) haga ((@pi * @r) * @r) finProc
 ;          ) {
 ;             evaluar @areaCirculo (@radio) finEval
 ;                     }
+
+; Ejemplo con radio = 3
+;  declarar (
+;          @radio=3;
+;          @areaCirculo = procedimiento(@r) haga ((@pi * @r) * @r) finProc
+;          ) {
+;             evaluar @areaCirculo (@radio) finEval
+;                     }
+; ----------------------------------------------------------------------------------------------
+
 ; b) 5pts. Escriba un programa en su lenguaje de programación que contenga un
 ; procedimiento que permita calcular el factorial de un número n.
 ; Como la gramática para funciones recursivas debe ser propuesta por el grupo,
 ; incluya dos ejemplos de uso para el factorial de 5 y el factorial de 10.
 ;
-;# ejemplo con 5
+;Ejemplo con 5
 ;
 ;   funcionRec
 ;          @factorial(@n) = 
@@ -376,7 +376,7 @@
 ;          haga
 ;             evaluar @factorial (5) finEval finRec
 ;
-;# ejemplo con 10
+;Ejemplo con 10
 ;
 ;   funcionRec
 ;          @factorial(@n) = 
@@ -385,6 +385,18 @@
 ;                sino 1 finSI
 ;          haga
 ;             evaluar @factorial (10) finEval finRec
+
+;Ejemplo con 3
+;
+;   funcionRec
+;          @factorial(@n) = 
+;             Si @n 
+;                entonces (@n * evaluar @factorial (sub1(@n)) finEval)
+;                sino 1 finSI
+;          haga
+;             evaluar @factorial (3) finEval finRec
+
+;----------------------------------------------------------------------------------------------
 ; 
 ; c) 10pts. Escriba un programa en su lenguaje de programación que contenga un
 ; procedimiento que permita calcular una suma de forma recursiva.
@@ -392,18 +404,30 @@
 ; donde se implementó la interfaz con las funciones zero, isZero?, sucessor, predecessor).
 ; Si no se evidencia el uso de add1 y sub1, el ejercicio no será valido.
 ; Incluya un llamado a la función recursiva: "evaluar @sumar (4, 5) finEval "
-; 
+;
+; Ejemplo sumando 4 y 5
+;
 ;  funcionRec
 ;    @sumar(@x;@y) = Si @x entonces evaluar @sumar (sub1(@x),add1(@y)) finEval sino @y finSI
 ;    haga
 ;    evaluar @sumar (4,5) finEval
 ;  finRec
+;
+; Ejemplo sumando 2 y 3
+;
+;  funcionRec
+;    @sumar(@x;@y) = Si @x entonces evaluar @sumar (sub1(@x),add1(@y)) finEval sino @y finSI
+;    haga
+;    evaluar @sumar (2,3) finEval
+;  finRec
 
-; ***********************************************************************************************
+;----------------------------------------------------------------------------------------------
 
 ; d) 15pts. Escriba un programa en su lenguaje de programación que permita restar y
 ; multiplicar dos números haciendo uso solamente de las primitivas add1 y sub1.
 ; Incluya llamados:  "evaluar @restar (10, 3) finEval  ",  "evaluar @multiplicar (10, 3) finEval" 
+
+; Ejemplo restando 10 y 3
 
 ;  funcionRec
 ;    @restar(@x;@y) = Si @y entonces evaluar @restar (sub1(@x),sub1(@y)) finEval sino @x finSI
@@ -413,6 +437,18 @@
 ;    evaluar @restar (10,3) finEval
 ;  finRec
 
+; Ejemplo restando 5 y 3
+
+;  funcionRec
+;    @restar(@x;@y) = Si @y entonces evaluar @restar (sub1(@x),sub1(@y)) finEval sino @x finSI
+;    @sumar(@a;@b) = Si @a entonces evaluar @sumar (sub1(@a),add1(@b)) finEval sino @b finSI
+;    @multiplicar(@c;@d) = Si @d entonces evaluar @sumar (@c, evaluar @multiplicar (@c,sub1(@d)) finEval) finEval sino 0 finSI
+;    haga
+;    evaluar @restar (5,3) finEval
+;  finRec
+
+; Ejemplo multiplicando 10 y 3
+
 ; funcionRec
 ;   @restar(@x;@y) = Si @y entonces evaluar @restar (sub1(@x),sub1(@y)) finEval sino @x finSI
 ;   @sumar(@a;@b) = Si @a entonces evaluar @sumar (sub1(@a),add1(@b)) finEval sino @b finSI
@@ -420,6 +456,18 @@
 ;   haga
 ;   evaluar @multiplicar (10,3) finEval
 ; finRec
+
+; Ejemplo multiplicando 5 y 3
+
+; funcionRec
+;   @restar(@x;@y) = Si @y entonces evaluar @restar (sub1(@x),sub1(@y)) finEval sino @x finSI
+;   @sumar(@a;@b) = Si @a entonces evaluar @sumar (sub1(@a),add1(@b)) finEval sino @b finSI
+;   @multiplicar(@c;@d) = Si @d entonces evaluar @sumar (@c, evaluar @multiplicar (@c,sub1(@d)) finEval) finEval sino 0 finSI
+;   haga
+;   evaluar @multiplicar (5,3) finEval
+; finRec
+
+;----------------------------------------------------------------------------------------------
 
 ; e) 25pts. Crea una función @integrantes que muestre los nombres de los integrantes del grupo y adicionalmente crea un decorador
 ; que al invocarlo salude a los integrantes
