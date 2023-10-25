@@ -365,7 +365,7 @@
 
 ; Ejemplo con radio = 10    // A = 314.159265 (aprox)
 ;  declarar (
-;          @radio=3;
+;          @radio=10;
 ;          @areaCirculo = procedimiento(@r) haga ((@pi * @r) * @r) finProc
 ;          ) {
 ;             evaluar @areaCirculo (@radio) finEval
@@ -409,7 +409,7 @@
 ;                entonces (@n * evaluar @factorial (sub1(@n)) finEval)
 ;                sino 1 finSI
 ;          haga
-;             evaluar @factorial (3) finEval finRec
+;             evaluar @factorial (40) finEval finRec
 
 ;-------------------------------------------------------------------------------------------------------
 ; 
@@ -472,7 +472,7 @@
 ;    @sumar(@a;@b) = Si @a entonces evaluar @sumar (sub1(@a),add1(@b)) finEval sino @b finSI
 ;    @multiplicar(@c;@d) = Si @d entonces evaluar @sumar (@c, evaluar @multiplicar (@c,sub1(@d)) finEval) finEval sino 0 finSI
 ;    haga
-;    evaluar @restar (5,3) finEval
+;    evaluar @restar (2,5) finEval
 ;  finRec
 
 
