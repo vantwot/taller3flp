@@ -344,6 +344,17 @@
 ;; permita calcular el area de un circulo dado un radio (A=PI*r*r). Debe incluir valores flotantes en
 ;; su lenguaje de programación. Deberá invocarlo utilizando una variable @radio como parámetro:
 
+;; areaCirculo :
+;; Propósito:
+;; N -> N' :  Calcula el área de un círculo dado un radio.
+;;
+;; Entradas:
+;;   @radio: Valor numérico que representa el radio del círculo.
+;;
+;; Salida:
+;;   N: Área del círculo calculada como A = π * r * r, donde π es una constante.
+;;
+;; <expresion> := <numero-lit>
 
 ; Ejemplo con radio = 2.5    // A = 19.6349540625 (aprox)
 ;  declarar (
@@ -378,6 +389,17 @@
 ; Como la gramática para funciones recursivas debe ser propuesta por el grupo,
 ; incluya dos ejemplos de uso para el factorial de 5 y el factorial de 10.
 
+;; factorial :
+;; Propósito:
+;;   N -> N' : Calcula el factorial de un número entero no negativo.
+;;
+;; Entradas:
+;;   @n: Número entero no negativo para calcular su factorial.
+;;
+;; Salida:
+;;   El factorial de @n.
+;;
+;; <expresion> := <numero-lit>
 
 ; Ejemplo con 5    // 5! = 120
 ;
@@ -420,6 +442,18 @@
 ; Si no se evidencia el uso de add1 y sub1, el ejercicio no será valido.
 ; Incluya un llamado a la función recursiva: "evaluar @sumar (4, 5) finEval "
 
+;; sumar :
+;; Propósito:
+;;   N * N -> N' : Calcula la suma de dos números enteros de forma recursiva.
+;;
+;; Entradas:
+;;   @x: Primer número entero.
+;;   @y: Segundo número entero.
+;;
+;; Salida:
+;;   La suma de @x y @y.
+;;
+;; <expresion> := <numero-lit>
 
 ; Ejemplo sumando 4 y 5    // 4 + 5 = 9
 ;
@@ -453,6 +487,18 @@
 ; multiplicar dos números haciendo uso solamente de las primitivas add1 y sub1.
 ; Incluya llamados:  "evaluar @restar (10, 3) finEval  ",  "evaluar @multiplicar (10, 3) finEval" 
 
+;; restar :
+;; Propósito:
+;;   N * N -> N' : Resta dos números enteros usando add1 y sub1 de forma recursiva.
+;;
+;; Entradas:
+;;   @x: Primer número entero.
+;;   @y: Segundo número entero.
+;;
+;; Salida:
+;;   La resta de @x y @y.
+;;
+;; <expresion> := <numero-lit>
 
 ; Ejemplo restando 10 y 3    // 10 - 3 = 7
 
@@ -475,6 +521,18 @@
 ;    evaluar @restar (2,5) finEval
 ;  finRec
 
+;; multiplicar :
+;; Propósito:
+;;   N * N -> N' : Multiplica dos números enteros usando add1 y sub1 de forma recursiva.
+;;
+;; Entradas:
+;;   @c: Primer número entero.
+;;   @d: Segundo número entero.
+;;
+;; Salida:
+;;   El producto de @c y @d.
+;;
+;; <expresion> := <numero-lit>
 
 ; Ejemplo multiplicando 10 y 3    // 10 * 3 = 30
 ; funcionRec
@@ -501,6 +559,40 @@
 ; e) 25pts. Crea una función @integrantes que muestre los nombres de los integrantes del grupo y adicionalmente crea un decorador
 ; que al invocarlo salude a los integrantes
 
+;; integrantes :
+;; Propósito:
+;;  () -> S' : Muestra los nombres de los integrantes del grupo.
+;;
+;; Entradas:
+;;
+;; Salida:
+;;   Retorna un string con los nombre de los integrantes
+;;
+;; <expresion> := <texto-lit>
+
+;; saludar :
+;; Propósito:
+;;   S -> S' : Saluda a los integrantes.
+;;
+;; Entradas:
+;;   @funcion: Una función que devuelve los nombres de los integrantes.
+;;
+;; Salida:
+;;   Un saludo a los integrantes.
+;;
+;; <expresion> := <texto-lit>
+
+;; decorate :
+;; Propósito:
+;;   () -> S' : Agrega un mensaje al final del saludo.
+;;
+;; Entradas:
+;;
+;; Salida:
+;;   El saludo con el mensaje adicional al final.
+;;
+;; <expresion> := <texto-lit>
+
 ; declarar (
 ;    @integrantes = procedimiento () haga "Santiago-Deiby-Valentina" finProc;
 ;    @saludar = procedimiento (@funcion) haga ("Hola:" concat evaluar @funcion () finEval) finProc
@@ -514,6 +606,40 @@
 ;f) 35pts. Modifique el ejercicio anterior para que el decorador reciba como parámetro otro mensaje que debe ponerse al final de todo
 ; el string (cualquier implementación sin el concepto de decorador no será evaluada).
 
+;; integrantes :
+;; Propósito:
+;;  () -> S' : Muestra los nombres de los integrantes del grupo.
+;;
+;; Entradas:
+;;
+;; Salida:
+;;   Retorna un string con los nombre de los integrantes
+;;
+;; <expresion> := <texto-lit>
+
+;; saludar :
+;; Propósito:
+;;   S -> S' : Saluda a los integrantes.
+;;
+;; Entradas:
+;;   @funcion: Una función que devuelve los nombres de los integrantes.
+;;
+;; Salida:
+;;   Un saludo a los integrantes.
+;;
+;; <expresion> := <texto-lit>
+
+;; decorate :
+;; Propósito:
+;;   S -> S' : Agrega un mensaje al final del saludo.
+;;
+;; Entradas:
+;;   @var: Mensaje adicional a agregar al saludo.
+;;
+;; Salida:
+;;   El saludo con el mensaje adicional al final.
+;;
+;; <expresion> := <texto-lit>
 
 ; declarar (
 ;    @integrantes = procedimiento () haga "Santiago-Deiby-Valentina" finProc;
@@ -529,5 +655,3 @@
 ;   ) {
 ;      declarar (@decorate = procedimiento (@var) haga (evaluar @saludar (@integrantes) finEval concat @var) finProc){
 ;          evaluar @decorate (":Esto-es-un-programa-funcional$") finEval }}
-
-
