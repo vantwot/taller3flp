@@ -344,7 +344,8 @@
 ;; permita calcular el area de un circulo dado un radio (A=PI*r*r). Debe incluir valores flotantes en
 ;; su lenguaje de programación. Deberá invocarlo utilizando una variable @radio como parámetro:
 
-; Ejemplo con radio = 2.5
+
+; Ejemplo con radio = 2.5    // A = 19.6349540625 (aprox)
 ;  declarar (
 ;          @radio=2.5;
 ;          @areaCirculo = procedimiento(@r) haga ((@pi * @r) * @r) finProc
@@ -352,21 +353,33 @@
 ;             evaluar @areaCirculo (@radio) finEval
 ;                     }
 
-; Ejemplo con radio = 3
+
+; Ejemplo con radio = 3    // A = 28.274333850000005 (aprox)
 ;  declarar (
 ;          @radio=3;
 ;          @areaCirculo = procedimiento(@r) haga ((@pi * @r) * @r) finProc
 ;          ) {
 ;             evaluar @areaCirculo (@radio) finEval
 ;                     }
-; ----------------------------------------------------------------------------------------------
+
+
+; Ejemplo con radio = 10    // A = 314.159265 (aprox)
+;  declarar (
+;          @radio=3;
+;          @areaCirculo = procedimiento(@r) haga ((@pi * @r) * @r) finProc
+;          ) {
+;             evaluar @areaCirculo (@radio) finEval
+;                     }
+
+;-------------------------------------------------------------------------------------------------------
 
 ; b) 5pts. Escriba un programa en su lenguaje de programación que contenga un
 ; procedimiento que permita calcular el factorial de un número n.
 ; Como la gramática para funciones recursivas debe ser propuesta por el grupo,
 ; incluya dos ejemplos de uso para el factorial de 5 y el factorial de 10.
-;
-;Ejemplo con 5
+
+
+; Ejemplo con 5    // 5! = 120
 ;
 ;   funcionRec
 ;          @factorial(@n) = 
@@ -375,8 +388,9 @@
 ;                sino 1 finSI
 ;          haga
 ;             evaluar @factorial (5) finEval finRec
-;
-;Ejemplo con 10
+
+
+; Ejemplo con 10    // 10! = 3628800
 ;
 ;   funcionRec
 ;          @factorial(@n) = 
@@ -386,7 +400,8 @@
 ;          haga
 ;             evaluar @factorial (10) finEval finRec
 
-;Ejemplo con 3
+
+; Ejemplo con 40    // 40! = 815915283247897734345611269596115894272000000000
 ;
 ;   funcionRec
 ;          @factorial(@n) = 
@@ -396,7 +411,7 @@
 ;          haga
 ;             evaluar @factorial (3) finEval finRec
 
-;----------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------
 ; 
 ; c) 10pts. Escriba un programa en su lenguaje de programación que contenga un
 ; procedimiento que permita calcular una suma de forma recursiva.
@@ -404,16 +419,18 @@
 ; donde se implementó la interfaz con las funciones zero, isZero?, sucessor, predecessor).
 ; Si no se evidencia el uso de add1 y sub1, el ejercicio no será valido.
 ; Incluya un llamado a la función recursiva: "evaluar @sumar (4, 5) finEval "
-;
-; Ejemplo sumando 4 y 5
+
+
+; Ejemplo sumando 4 y 5    // 4 + 5 = 9
 ;
 ;  funcionRec
 ;    @sumar(@x;@y) = Si @x entonces evaluar @sumar (sub1(@x),add1(@y)) finEval sino @y finSI
 ;    haga
 ;    evaluar @sumar (4,5) finEval
 ;  finRec
-;
-; Ejemplo sumando 2 y 3
+
+
+; Ejemplo sumando 2 y 3    // 2 + 3 = 5
 ;
 ;  funcionRec
 ;    @sumar(@x;@y) = Si @x entonces evaluar @sumar (sub1(@x),add1(@y)) finEval sino @y finSI
@@ -421,13 +438,23 @@
 ;    evaluar @sumar (2,3) finEval
 ;  finRec
 
-;----------------------------------------------------------------------------------------------
+
+; Ejemplo sumando 18 y 21    // 18 + 21 = 39
+;
+;  funcionRec
+;    @sumar(@x;@y) = Si @x entonces evaluar @sumar (sub1(@x),add1(@y)) finEval sino @y finSI
+;    haga
+;    evaluar @sumar (18,21) finEval
+;  finRec
+
+;-------------------------------------------------------------------------------------------------------
 
 ; d) 15pts. Escriba un programa en su lenguaje de programación que permita restar y
 ; multiplicar dos números haciendo uso solamente de las primitivas add1 y sub1.
 ; Incluya llamados:  "evaluar @restar (10, 3) finEval  ",  "evaluar @multiplicar (10, 3) finEval" 
 
-; Ejemplo restando 10 y 3
+
+; Ejemplo restando 10 y 3    // 10 - 3 = 7
 
 ;  funcionRec
 ;    @restar(@x;@y) = Si @y entonces evaluar @restar (sub1(@x),sub1(@y)) finEval sino @x finSI
@@ -437,7 +464,8 @@
 ;    evaluar @restar (10,3) finEval
 ;  finRec
 
-; Ejemplo restando 5 y 3
+
+; Ejemplo restando 2 y 5    // 2 - 5 = -3
 
 ;  funcionRec
 ;    @restar(@x;@y) = Si @y entonces evaluar @restar (sub1(@x),sub1(@y)) finEval sino @x finSI
@@ -447,8 +475,8 @@
 ;    evaluar @restar (5,3) finEval
 ;  finRec
 
-; Ejemplo multiplicando 10 y 3
 
+; Ejemplo multiplicando 10 y 3    // 10 * 3 = 30
 ; funcionRec
 ;   @restar(@x;@y) = Si @y entonces evaluar @restar (sub1(@x),sub1(@y)) finEval sino @x finSI
 ;   @sumar(@a;@b) = Si @a entonces evaluar @sumar (sub1(@a),add1(@b)) finEval sino @b finSI
@@ -457,7 +485,8 @@
 ;   evaluar @multiplicar (10,3) finEval
 ; finRec
 
-; Ejemplo multiplicando 5 y 3
+
+; Ejemplo multiplicando 5 y 3    // 5 * 3 = 15
 
 ; funcionRec
 ;   @restar(@x;@y) = Si @y entonces evaluar @restar (sub1(@x),sub1(@y)) finEval sino @x finSI
@@ -467,24 +496,38 @@
 ;   evaluar @multiplicar (5,3) finEval
 ; finRec
 
-;----------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------
 
 ; e) 25pts. Crea una función @integrantes que muestre los nombres de los integrantes del grupo y adicionalmente crea un decorador
 ; que al invocarlo salude a los integrantes
 
 ; declarar (
-;     @integrantes = procedimiento () haga "Santiago-Deiby-Valentina" finProc;
-;    @saludar = procedimiento (@var) haga ("Hola:" concat evaluar @var () finEval) finProc
-;  ) {
-;      declarar (@decorate = procedimiento () haga evaluar @saludar (@integrantes) finEval finProc){
-;evaluar @decorate () finEval }}
+;    @integrantes = procedimiento () haga "Santiago-Deiby-Valentina" finProc;
+;    @saludar = procedimiento (@funcion) haga ("Hola:" concat evaluar @funcion () finEval) finProc
+;   ) {
+;      declarar (@decorate = procedimiento () haga evaluar @saludar (@integrantes) finEval finProc
+;        ) {
+;           evaluar @decorate () finEval }}
+
+;-------------------------------------------------------------------------------------------------------
 
 ;f) 35pts. Modifique el ejercicio anterior para que el decorador reciba como parámetro otro mensaje que debe ponerse al final de todo
 ; el string (cualquier implementación sin el concepto de decorador no será evaluada).
 
-;declarar (
-;    @integrantes = procedimiento () haga "S-D-V" finProc;
-;    @saludar = procedimiento (@var) haga ("Hola:" concat evaluar @var () finEval) finProc
+
+; declarar (
+;    @integrantes = procedimiento () haga "Santiago-Deiby-Valentina" finProc;
+;    @saludar = procedimiento (@funcion) haga ("Hola:" concat evaluar @funcion () finEval) finProc
 ;  ) {
-;      declarar (@decorate = procedimiento (@vars) haga (evaluar @saludar (@integrantes) finEval concat @vars) finProc){
-;evaluar @decorate ("-ProfesoresFLP") finEval }}
+;      declarar (@decorate = procedimiento (@var) haga (evaluar @saludar (@integrantes) finEval concat @var) finProc){
+; evaluar @decorate ("-ProfesoresFLP") finEval }}
+
+
+; declarar (
+;     @integrantes = procedimiento () haga "Santiago-Deiby-Valentina" finProc;
+;     @saludar = procedimiento (@funcion) haga ("Hola:" concat evaluar @funcion () finEval) finProc
+;   ) {
+;      declarar (@decorate = procedimiento (@var) haga (evaluar @saludar (@integrantes) finEval concat @var) finProc){
+;          evaluar @decorate (":Esto-es-un-programa-funcional$") finEval }}
+
+
